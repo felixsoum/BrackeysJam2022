@@ -41,7 +41,10 @@ public class Player : MonoBehaviour
         cameraForward.Normalize();
 
         var direction = cameraForward * movementZ + cameraObject.transform.right * movementX;
-        direction.Normalize();
+        if (direction.magnitude > 1)
+        {
+            direction.Normalize(); 
+        }
         body.AddForce(direction * moveSpeed, ForceMode.VelocityChange);
     }
 
