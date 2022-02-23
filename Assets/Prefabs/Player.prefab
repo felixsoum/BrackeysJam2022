@@ -1,5 +1,35 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3442980197607517278
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1610710712621312010}
+  m_Layer: 0
+  m_Name: BeerSpawn
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1610710712621312010
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3442980197607517278}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0.8}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 7299468743251005137}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5757091601384312319
 GameObject:
   m_ObjectHideFlags: 0
@@ -147,6 +177,9 @@ MonoBehaviour:
   moveSpeed: 1
   cameraObject: {fileID: 7299468743251005138}
   armObject: {fileID: 6473188773954922739}
+  beerObject: {fileID: 5757091601384312319}
+  thrownBeerPrefab: {fileID: 541470070734602349, guid: e34254d839c9e444289e0b325421da88, type: 3}
+  beerSpawn: {fileID: 1610710712621312010}
 --- !u!54 &2785667758098656406
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -227,6 +260,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 3975640781823281363}
+  - {fileID: 1610710712621312010}
   m_Father: {fileID: 4610810109623177164}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -253,7 +287,7 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.01
+  near clip plane: 0.1
   far clip plane: 100
   field of view: 60
   orthographic: 0
