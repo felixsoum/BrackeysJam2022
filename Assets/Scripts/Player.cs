@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -7,7 +6,6 @@ public class Player : MonoBehaviour
     [SerializeField] float moveSpeed = 10;
     [SerializeField] GameObject cameraObject;
     [SerializeField] GameObject armObject;
-
 
     Rigidbody body;
     float cameraRotX;
@@ -33,24 +31,37 @@ public class Player : MonoBehaviour
         extendedArmPos = armObject.transform.localPosition + armObject.transform.forward * 1;
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         float movementZ = Input.GetAxisRaw("Vertical");
         float movementX = Input.GetAxisRaw("Horizontal");
 
-        float cameraX = Input.GetAxis("Mouse Y");
-        float cameraY = Input.GetAxis("Mouse X");
+        var cameraForward = cameraObject.transform.forward;
+        cameraForward.y = 0;
+        cameraForward.Normalize();
 
-        var direction = transform.forward * movementZ + transform.right * movementX;
+        var direction = cameraForward * movementZ + cameraObject.transform.right * movementX;
         direction.Normalize();
+        body.AddForce(direction * moveSpeed, ForceMode.VelocityChange);
+    }
 
-        body.AddForce(direction * moveSpeed);
+    private void Update()
+    {
+
+
+        float cameraX = Mathf.Clamp(Input.GetAxis("Mouse Y"), -15f, 15f);
+        float cameraY = Mathf.Clamp(Input.GetAxis("Mouse X"), -15f, 15f);
 
         cameraRotX += cameraX * mouseSpeed * Time.deltaTime;
+        cameraRotX = Mathf.Clamp(cameraRotX, -60f, 60f);
         bodyRotY += cameraY * mouseSpeed * Time.deltaTime;
+        if (bodyRotY < 0)
+        {
+            bodyRotY = (bodyRotY + 360f) % 360f; 
+        }
+        //transform.eulerAngles = new Vector3(0, bodyRotY, 0);
+        cameraObject.transform.localEulerAngles = new Vector3(-cameraRotX, bodyRotY, 0);
 
-        transform.eulerAngles = new Vector3(0, bodyRotY, 0);
-        cameraObject.transform.localEulerAngles = new Vector3(-cameraRotX, 0, 0);
 
         armObject.transform.localPosition = Vector3.Lerp(armObject.transform.localPosition, originalArmPos, Time.deltaTime * 10);
 
@@ -64,7 +75,6 @@ public class Player : MonoBehaviour
             armObject.transform.localPosition = extendedArmPos;
             choppingFrames = activeChoppingFrames;
         }
-
     }
 
     internal void OnHandTrigger(Enemy enemy)

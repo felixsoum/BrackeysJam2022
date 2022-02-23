@@ -22,7 +22,7 @@ public class Enemy : MonoBehaviour
     {
         if (Vector3.Distance(transform.position, player.transform.position) < 10)
         {
-            agent.SetDestination(player.transform.position);
+            //agent.SetDestination(player.transform.position);
             flipTimer -= Time.deltaTime;
             if (flipTimer <= 0)
             {
