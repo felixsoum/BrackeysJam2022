@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -10,6 +11,8 @@ public class Player : MonoBehaviour
     [SerializeField] GameObject thrownBeerPrefab;
 
     [SerializeField] Transform beerSpawn;
+
+    public Action<int> OnBeerCountChanged;
 
     Rigidbody body;
     float cameraRotX;
@@ -27,11 +30,14 @@ public class Player : MonoBehaviour
     bool isAiming;
     float beerChargeTime;
 
+    int beerCount;
+
     private void Awake()
     {
         Cursor.lockState = CursorLockMode.Locked;
         body = GetComponent<Rigidbody>();
         bodyRotY = transform.eulerAngles.y;
+        beerObject.SetActive(false);
     }
 
     private void Start()
@@ -73,7 +79,7 @@ public class Player : MonoBehaviour
 
         cameraObject.transform.localEulerAngles = new Vector3(-cameraRotX, bodyRotY, 0);
 
-        if (Input.GetMouseButtonDown(0) && hasBeer && !isAiming)
+        if (Input.GetMouseButtonDown(0) && hasBeer && !isAiming && beerCount > 0)
         {
             isAiming = true;
             targetArmRot = upArmRot;
@@ -81,6 +87,7 @@ public class Player : MonoBehaviour
         }
         else if (Input.GetMouseButtonUp(0) && hasBeer && isAiming)
         {
+            OnBeerCountChanged?.Invoke(--beerCount);
             isAiming = false;
             hasBeer = false;
             beerObject.SetActive(false);
@@ -94,7 +101,10 @@ public class Player : MonoBehaviour
         else if (!hasBeer && Mathf.Abs(armObject.transform.localEulerAngles.x - targetArmRot) < 1)
         {
             hasBeer = true;
-            beerObject.SetActive(true);
+            if (beerCount > 0)
+            {
+                beerObject.SetActive(true); 
+            }
             targetArmRot = 0;
         }
 
@@ -116,5 +126,20 @@ public class Player : MonoBehaviour
         //    enemy.GetChopped(direction.normalized);
         //}
     }
-    
+
+    internal void RefillBeer()
+    {
+        hasBeer = true;
+
+        if (!beerObject.activeInHierarchy && beerCount == 0)
+        {
+            beerObject.SetActive(true);
+            armObject.transform.localEulerAngles = new Vector3(downArmRot, 0, 0);
+            targetArmRot = 0;
+        }
+
+        beerCount = 6;
+        OnBeerCountChanged?.Invoke(beerCount);
+    }
+
 }
