@@ -1,15 +1,14 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class BaseNPC : MonoBehaviour
 {
     [SerializeField] GameObject visualObject;
-    Camera mainCamera;
+    protected Player player;
+    protected Camera mainCamera;
 
     protected virtual void Start()
     {
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
         mainCamera = Camera.main;    
     }
 
@@ -21,5 +20,13 @@ public class BaseNPC : MonoBehaviour
     internal virtual void OnBeerHit()
     {
 
+    }
+
+    protected bool IsPlayerInVision()
+    {
+        var dir = player.transform.position - transform.position;
+        RaycastHit hitInfo;
+        Physics.Raycast(transform.position, dir, out hitInfo);
+        return hitInfo.collider.gameObject.CompareTag("Player");
     }
 }
