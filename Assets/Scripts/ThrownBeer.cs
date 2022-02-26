@@ -23,4 +23,20 @@ public class ThrownBeer : MonoBehaviour
         body.AddForce(force, ForceMode.VelocityChange);
         body.AddTorque(Random.onUnitSphere * 10);
     }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (!collision.gameObject.CompareTag("Enemy"))
+        {
+            return;
+        }
+
+        var baseNPC = collision.gameObject.GetComponent<BaseNPC>();
+        if (baseNPC == null)
+        {
+            return;
+        }
+
+        baseNPC.OnBeerHit();
+    }
 }
