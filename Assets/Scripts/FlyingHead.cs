@@ -22,7 +22,6 @@ public class FlyingHead : BaseNPC
             }
         }
 
-
         base.Start();
     }
 
@@ -45,5 +44,13 @@ public class FlyingHead : BaseNPC
     internal override void OnBeerHit()
     {
         gameObject.SetActive(false);
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            collision.gameObject.GetComponent<Player>().AddInsanity(0.25f);
+        }
     }
 }

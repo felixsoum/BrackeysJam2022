@@ -13,6 +13,7 @@ public class Player : MonoBehaviour
     [SerializeField] Transform beerSpawn;
 
     public Action<int> OnBeerCountChanged;
+    public Action<float> OnSanityChanged;
 
     Rigidbody body;
     float cameraRotX;
@@ -30,6 +31,7 @@ public class Player : MonoBehaviour
     bool isAiming;
     float beerChargeTime;
 
+    float insanity;
     int beerCount;
 
     private void Awake()
@@ -140,6 +142,15 @@ public class Player : MonoBehaviour
 
         beerCount = 6;
         OnBeerCountChanged?.Invoke(beerCount);
+        insanity = 0;
+        OnSanityChanged(insanity);
+    }
+
+    internal void AddInsanity(float value)
+    {
+        insanity += value;
+        insanity = Mathf.Clamp01(insanity);
+        OnSanityChanged(insanity);
     }
 
 }

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2757078104838326762}
   - component: {fileID: 7092428762690016033}
   m_Layer: 0
-  m_Name: Watcher
+  m_Name: Diver
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -72,8 +72,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -2256948484998397059, guid: 740a5f399b65f134581077cd86d39cc4, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Sprite: {fileID: -5515134220035640716, guid: bb502abf9b5c1b648b3c13ca46df619d, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.49803922}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -107,7 +107,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2880418714114946215}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2757078104838326762}
@@ -126,9 +126,10 @@ GameObject:
   - component: {fileID: 6938058538589793273}
   - component: {fileID: 3903569844644507760}
   - component: {fileID: 2532611404562826149}
-  - component: {fileID: 318787334082598551}
+  - component: {fileID: 4590540386239432694}
+  - component: {fileID: 8722034191014509344}
   m_Layer: 0
-  m_Name: Watcher
+  m_Name: Diver
   m_TagString: Enemy
   m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -159,8 +160,8 @@ CapsuleCollider:
   m_Material: {fileID: 13400000, guid: 9ec9b541273b17749974006e3924415c, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.5
-  m_Height: 3
+  m_Radius: 1.5
+  m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &3903569844644507760
@@ -177,7 +178,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 126
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!195 &2532611404562826149
 NavMeshAgent:
@@ -186,7 +187,7 @@ NavMeshAgent:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4900332980804020652}
-  m_Enabled: 0
+  m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
   m_Speed: 3.5
@@ -197,11 +198,30 @@ NavMeshAgent:
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
-  m_Height: 3
+  m_Height: 2
   m_BaseOffset: 1
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &318787334082598551
+--- !u!95 &4590540386239432694
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4900332980804020652}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 09a7373479c054b408aab4b570ff619b, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &8722034191014509344
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -210,15 +230,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4900332980804020652}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0e71d36cc7288014f87643dc60c7114f, type: 3}
+  m_Script: {fileID: 11500000, guid: 8e30fc5ecbea3724486f1cf5919d6f7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   visualObject: {fileID: 2880418714114946215}
-  spriteRenderer: {fileID: 7092428762690016033}
-  sprites:
-  - {fileID: -2256948484998397059, guid: 740a5f399b65f134581077cd86d39cc4, type: 3}
-  - {fileID: -2050034775223430457, guid: 740a5f399b65f134581077cd86d39cc4, type: 3}
-  - {fileID: 6489340452963468851, guid: 740a5f399b65f134581077cd86d39cc4, type: 3}
-  - {fileID: 2938968616035752627, guid: 740a5f399b65f134581077cd86d39cc4, type: 3}
-  - {fileID: -3879422830383054484, guid: 740a5f399b65f134581077cd86d39cc4, type: 3}
-  - {fileID: 2837364959852939840, guid: 740a5f399b65f134581077cd86d39cc4, type: 3}
