@@ -34,11 +34,14 @@ public class Player : MonoBehaviour
     float insanity;
     int beerCount;
 
+    float pause = 0.1f;
+
+
     private void Awake()
     {
         Cursor.lockState = CursorLockMode.Locked;
         body = GetComponent<Rigidbody>();
-        bodyRotY = transform.eulerAngles.y;
+        //bodyRotY = transform.localEulerAngles.y;
         beerObject.SetActive(false);
     }
 
@@ -51,6 +54,11 @@ public class Player : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (pause > 0)
+        {
+            return;
+        }
+
         float movementZ = Input.GetAxisRaw("Vertical");
         float movementX = Input.GetAxisRaw("Horizontal");
 
@@ -68,6 +76,12 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
+        if (pause > 0)
+        {
+            pause -= Time.deltaTime;
+            return;
+        }
+
         float cameraX = Mathf.Clamp(Input.GetAxis("Mouse Y"), -15f, 15f);
         float cameraY = Mathf.Clamp(Input.GetAxis("Mouse X"), -15f, 15f);
 

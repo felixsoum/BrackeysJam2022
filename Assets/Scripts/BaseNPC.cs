@@ -15,6 +15,11 @@ public class BaseNPC : MonoBehaviour
     protected virtual void Update()
     {
         visualObject.transform.forward = mainCamera.transform.forward;
+
+        if (Vector3.Distance(transform.position, player.transform.position) < 7.5f && IsPlayerInVision())
+        {
+            player.AddInsanity(0.1f * Time.deltaTime);
+        }
     }
 
     internal virtual void OnBeerHit()
