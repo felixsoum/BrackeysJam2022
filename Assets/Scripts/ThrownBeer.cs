@@ -3,7 +3,10 @@ using UnityEngine;
 public class ThrownBeer : MonoBehaviour
 {
     [SerializeField] Rigidbody body;
+    [SerializeField] AudioSource collisionAudio;
+
     float lifetime = 5f;
+    private bool isInactive;
 
     private void Update()
     {
@@ -26,6 +29,16 @@ public class ThrownBeer : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
+        if (!collisionAudio.isPlaying)
+        {
+            collisionAudio.Play();
+        }
+
+        if (isInactive)
+        {
+            return;
+        }
+
         if (!collision.gameObject.CompareTag("Enemy"))
         {
             return;
@@ -38,5 +51,6 @@ public class ThrownBeer : MonoBehaviour
         }
 
         baseNPC.OnBeerHit();
+        isInactive = true;
     }
 }

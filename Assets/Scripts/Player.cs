@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
@@ -7,10 +8,17 @@ public class Player : MonoBehaviour
     [SerializeField] float moveSpeed = 10;
     [SerializeField] GameObject cameraObject;
     [SerializeField] GameObject armObject;
+
     [SerializeField] GameObject beerObject;
     [SerializeField] GameObject thrownBeerPrefab;
 
     [SerializeField] Transform beerSpawn;
+
+    [SerializeField] AudioSource gameOverAudio;
+    [SerializeField] AudioSource ladyEndAudio;
+    [SerializeField] AudioSource throwBottleAudio;
+    [SerializeField] AudioSource beerBoxAudio;
+    [SerializeField] AudioSource runAudio;
 
     public Action<int> OnBeerCountChanged;
     public Action<float> OnSanityChanged;
@@ -36,6 +44,8 @@ public class Player : MonoBehaviour
 
     float pause = 0.1f;
 
+    bool isDead = false;
+    internal bool isEnding { get; private set; }
 
     private void Awake()
     {
@@ -54,13 +64,22 @@ public class Player : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (pause > 0)
+        if (pause > 0 || isDead || isEnding)
         {
             return;
         }
 
         float movementZ = Input.GetAxisRaw("Vertical");
         float movementX = Input.GetAxisRaw("Horizontal");
+
+        if (Mathf.Abs(movementZ) + Mathf.Abs(movementX) < 0.01f)
+        {
+            runAudio.volume = 0;
+        }
+        else
+        {
+            runAudio.volume = 0.05f;
+        }
 
         var cameraForward = cameraObject.transform.forward;
         cameraForward.y = 0;
@@ -76,6 +95,11 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
+        if (isDead || isEnding)
+        {
+            return;
+        }
+
         if (pause > 0)
         {
             pause -= Time.deltaTime;
@@ -113,6 +137,7 @@ public class Player : MonoBehaviour
             var thrownBeer = Instantiate(thrownBeerPrefab, beerSpawn.position, beerSpawn.rotation).GetComponent<ThrownBeer>();
             float beerForce = Mathf.Min(beerChargeTime * 10, 100);
             thrownBeer.Throw(beerSpawn.forward * beerForce);
+            throwBottleAudio.Play();
         }
         else if (!hasBeer && Mathf.Abs(armObject.transform.localEulerAngles.x - targetArmRot) < 1)
         {
@@ -145,6 +170,7 @@ public class Player : MonoBehaviour
 
     internal void RefillBeer()
     {
+        beerBoxAudio.Play();
         hasBeer = true;
 
         if (!beerObject.activeInHierarchy && beerCount == 0)
@@ -165,6 +191,31 @@ public class Player : MonoBehaviour
         insanity += value;
         insanity = Mathf.Clamp01(insanity);
         OnSanityChanged(insanity);
+        if (insanity == 1 && !isDead)
+        {
+            isDead = true;
+            Invoke("Reset", 3f);
+            gameOverAudio.Play();
+        }
     }
 
+    public void Reset()
+    {
+        SceneManager.LoadScene("CityScene");
+    }
+
+    internal void End()
+    {
+        if (!isEnding)
+        {
+            isEnding = true;
+            ladyEndAudio.Play();
+            Invoke("GoCredits", 31f);
+        }
+    }
+
+    public void GoCredits()
+    {
+        SceneManager.LoadScene("Credits");
+    }
 }

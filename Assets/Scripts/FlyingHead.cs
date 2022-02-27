@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
@@ -41,13 +40,14 @@ public class FlyingHead : BaseNPC
         base.Update();
     }
 
-    internal override void OnBeerHit()
-    {
-        gameObject.SetActive(false);
-    }
 
     private void OnCollisionEnter(Collision collision)
     {
+        if (isDead)
+        {
+            return;
+        }
+
         if (collision.gameObject.CompareTag("Player"))
         {
             collision.gameObject.GetComponent<Player>().AddInsanity(0.25f);

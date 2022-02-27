@@ -5,7 +5,16 @@ public class Stabber : BaseNPC
 {
     [SerializeField] NavMeshAgent agent;
     [SerializeField] Animator animator;
+    [SerializeField] AudioSource knifeAudio;
     bool isStalking;
+    private bool isEnraged;
+
+    internal override void OnBeerHit()
+    {
+        isEnraged = true;
+        isStalking = true;
+        base.OnBeerHit();
+    }
 
     protected override void Update()
     {
@@ -20,7 +29,7 @@ public class Stabber : BaseNPC
         }
         else
         {
-            if (Vector3.Angle(directionToEnemy.normalized, mainCamera.transform.forward) < 60f)
+            if (Vector3.Angle(directionToEnemy.normalized, mainCamera.transform.forward) < 60f && !isEnraged)
             {
                 agent.velocity = Vector3.zero; 
                 agent.isStopped = true;
@@ -33,10 +42,11 @@ public class Stabber : BaseNPC
         }
         bool isAttacking = distanceToPlayer < 2f;
         animator.SetBool("IsAttacking", isAttacking);
-        if (isAttacking)
+        if (isAttacking && !isDead)
         {
             player.AddInsanity(0.25f * Time.deltaTime);
         }
+        knifeAudio.volume = isAttacking && !isDead ? 1 : 0;
         base.Update();
     }
 }
